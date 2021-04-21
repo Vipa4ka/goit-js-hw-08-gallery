@@ -15,7 +15,6 @@ refs.galleryContainer.addEventListener('click', onOpenModal);
 refs.closeModalLightboxGallary.addEventListener('click', closeModal);
 refs.lightboxContainer.addEventListener('click', closeModalOverlay);
 window.addEventListener('keydown', closeModalESC);
-// refs.galleryContainer.addEventListener('click', flippingGalleryLeftRight);
 refs.galleryContainer.addEventListener('keydown', flippingGalleryLeftRight);
 
 //Создание и рендер разметки.
@@ -44,12 +43,14 @@ function onGalleryContainerClick(evt) {
     const isTargetSwatchEl = evt.target.classList.contains('gallery__image');
     if (!isTargetSwatchEl) {
         return;
-    }
+    } 
     const inGalleryBigImage = evt.target.dataset.source;
+    const inGalleryBigImageAlt = evt.target.alt;
 
     evt.preventDefault();
 
-    changeImageOnLightbox(inGalleryBigImage);
+    changeImageOnLightbox(inGalleryBigImage, inGalleryBigImageAlt);
+    // changeImageOnLightbox();
 }
 
 // Открытие модального окна
@@ -61,21 +62,17 @@ function onOpenModal(evt) {
     refs.lightboxContainer.classList.add('is-open');    
 }
 
-//Подмена значения атрибута `src` элемента `img.lightbox__image`
-function changeImageOnLightbox(img) {
-    refs.imageContainer.src = `${img}`;   
+//Подмена значения атрибута `src` и `alt`
+function changeImageOnLightbox(img, alt) {
+        refs.imageContainer.src = `${img}`;
+        refs.imageContainer.alt = `${alt}`;
 }
 
 //Закрытие модального окна по клику на кнопку
 function closeModal() {    
     refs.lightboxContainer.classList.remove('is-open');
-    
-    removeImageOnLightbox();
-}
 
-//Очистка значения атрибута `src` элемента `img.lightbox__image`
-function removeImageOnLightbox() {
-    refs.imageContainer.src = '';
+    changeImageOnLightbox('', '')
 }
 
 //Закрытие модального окна по клику на `div.lightbox__overlay`.
